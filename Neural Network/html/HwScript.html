@@ -1,0 +1,358 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>HwScript</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-07-03"><meta name="DC.source" content="HwScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">A1:</a></li><li><a href="#3">B1: plot_face function has been made</a></li><li><a href="#4">C12 + D12:</a></li><li><a href="#5">E1 - observing optimal parameters</a></li><li><a href="#6">E2 - observing optimal parameters - 2 Hidden layers</a></li></ul></div><pre class="codeinput">clear
+clc
+</pre><h2 id="2">A1:</h2><pre class="codeinput">load <span class="string">'face_train.mat'</span>
+load <span class="string">'face_test.mat'</span>
+load(<span class="string">'1Layer Results.mat'</span>)
+load(<span class="string">'2Layer Results.mat'</span>)
+ytest(ytest==-1)=2;
+fprintf(<span class="string">'\n**************************EX5 RESULTS *************************************************************|\n'</span>);
+fprintf(<span class="string">'\nA1: Data is loaded'</span>);
+</pre><pre class="codeoutput">
+**************************EX5 RESULTS *************************************************************|
+
+A1: Data is loaded</pre><h2 id="3">B1: plot_face function has been made</h2><pre class="codeinput">fprintf(<span class="string">'\nB1: plot_face function has been made\n'</span>);
+</pre><pre class="codeoutput">
+B1: plot_face function has been made
+</pre><h2 id="4">C12 + D12:</h2><pre class="codeinput">str=<span class="string">'C12 + D12: \nwe adjusted the nn parameters with initializeParam function to fit the relevant data.\n we test here combination of different parameters to fine tune our network and get\n the optimal parameters for us to use. we are using cross-validation to  figure it out.\n note: i hve already run this code so this will be in comments forunnecesary \nactivation of this heacy program.\n'</span>;
+
+max_iter=1500;
+InputLayerSize  = size(Xtrain,2);
+numLabels=2;
+alpha = [0.1 1 3];
+lambda = [0.1 1 3];
+HiddenLayer1=[8 14 20];
+HiddenLayer2=[8 14 20];
+
+<span class="comment">% training the network using backpropagation algorithm with different</span>
+<span class="comment">% values -  1 hidden layer</span>
+data1Layer=zeros(length(alpha)*length(lambda)*<span class="keyword">...</span>
+     length(HiddenLayer1),7);
+ accMax1=0;
+ count=1;
+
+<span class="comment">%{
+</span><span class="comment">for i=1:length(alpha)
+</span><span class="comment">   for j=1:length(lambda)
+</span><span class="comment">      for k=1:length(HiddenLayer1)
+</span><span class="comment">
+</span><span class="comment">            Theta1Tmp = InitializeParam( InputLayerSize,HiddenLayer1(k));
+</span><span class="comment">            Theta2Tmp = InitializeParam(HiddenLayer1(k),numLabels);
+</span><span class="comment">            [JTmp,Theta1Tmp,Theta2Tmp,accTmp] = bpHw(Theta1Tmp, Theta2Tmp, Xtrain,ytrain,max_iter, alpha(i),lambda(j));
+</span><span class="comment">            if accTmp&gt;accMax1
+</span><span class="comment">                J1=JTmp;
+</span><span class="comment">                Theta11=Theta1Tmp;
+</span><span class="comment">                Theta21=Theta2Tmp;
+</span><span class="comment">                accMax1=accTmp;
+</span><span class="comment">                i1=i;
+</span><span class="comment">                j1=j;
+</span><span class="comment">                k1=k;
+</span><span class="comment">            end
+</span><span class="comment">             fprintf(['\n %d from 27 iterations for 1 Layer \n'],count);
+</span><span class="comment">             count=count+1;
+</span><span class="comment">      end
+</span><span class="comment">   end
+</span><span class="comment">   end
+</span><span class="comment">%}</span>
+</pre><h2 id="5">E1 - observing optimal parameters</h2><pre class="codeinput">load(<span class="string">'1Layer Results.mat'</span>)
+fprintf(<span class="string">'\n----------------- E1 results -----------------------------------'</span>);
+fprintf(<span class="string">'\nOptimal parameters are : '</span>);
+fprintf(<span class="string">'\nNumber of neurons in hidden layer 1 : %d'</span>,HiddenLayer1(k1));
+fprintf(<span class="string">'\nAlpha value : %d'</span>,alpha(i1));
+fprintf(<span class="string">'\nlambda value : %d'</span>,lambda(j1));
+fprintf(<span class="string">'it seems that bigger number of neurons improva accuracy. also small lamda rank.\nthe best training results were very close to the testing results'</span>);
+<span class="comment">% F1 - observing optimal results</span>
+
+fprintf(<span class="string">'\n-----------------  F2  --- results :'</span>);
+<span class="comment">%run result through test using forward propogation</span>
+m = size(Xtest, 1);
+p1 = ff_predict(Theta11, Theta21, Xtest,ytest);
+accMaxOne=sum(p1 == ytest)/m * 100; <span class="comment">%we can see that the result is the same as loaded from '1Layer Results.mat'</span>
+fprintf(<span class="string">' Network Accuracy for Testing Set - one Layer: %f Precent \n\n'</span>, accMaxOne);
+<span class="comment">%fprintf('\n With optimal parameters: \nalpha=%f  \nlambda=%f \nnnumber of neurons for hidden layer:%f\n\n\n',alpha(i1),lambda(j1),HiddenLayer1(k1));</span>
+
+
+
+
+<span class="comment">% training the network using backpropagation algorithm with different</span>
+<span class="comment">% values -  2 hidden layer - again i already run this program so there is</span>
+<span class="comment">% no need to run again</span>
+
+accMax2=0;
+count=1;
+data2Layer=zeros(length(alpha)*length(lambda)*<span class="keyword">...</span>
+     length(HiddenLayer1)*length(HiddenLayer2),9);
+load <span class="string">'face_train.mat'</span>
+<span class="comment">%_________________________</span>
+<span class="comment">%{
+</span><span class="comment">for i=1:length(alpha)
+</span><span class="comment">   for j=1:length(lambda)
+</span><span class="comment">      for k=1:length(HiddenLayer1)
+</span><span class="comment">         for l=1:length(HiddenLayer2)
+</span><span class="comment">            Theta1Tmp = InitializeParam( InputLayerSize , HiddenLayer1(k));
+</span><span class="comment">            Theta2Tmp = InitializeParam( HiddenLayer1(k) , HiddenLayer2(l));
+</span><span class="comment">            Theta3Tmp = InitializeParam( HiddenLayer2(l),numLabels);
+</span><span class="comment">            [JTmp,Theta1Tmp,Theta2Tmp,Theta3Tmp,accTmp] = bpHw2(Theta1Tmp, Theta2Tmp, Theta3Tmp,Xtrain,ytrain,max_iter, alpha(i),lambda(j));
+</span><span class="comment">            if accTmp&gt;accMax2
+</span><span class="comment">                J2=JTmp;
+</span><span class="comment">                Theta12=Theta1Tmp;
+</span><span class="comment">                Theta22=Theta2Tmp;
+</span><span class="comment">                Theta32=Theta3Tmp;
+</span><span class="comment">                accMax2=accTmp;
+</span><span class="comment">                i2=i;
+</span><span class="comment">                j2=j;
+</span><span class="comment">                k2=k;
+</span><span class="comment">                l2=l;
+</span><span class="comment">            end
+</span><span class="comment">             fprintf(['\n %d from 81 iterations for 2 Layer \n'],count);
+</span><span class="comment">             count=count+1;
+</span><span class="comment">         end
+</span><span class="comment">      end
+</span><span class="comment">   end
+</span><span class="comment">end
+</span><span class="comment">%save the results
+</span><span class="comment">%save('1Layer Results','J1','Theta11','Theta21','accMax1','i1','j1','k1');
+</span><span class="comment">%save('2Layer Results','J2','Theta12','Theta22','Theta32','accMax2','i2','j2','k2','l2');
+</span><span class="comment">%}</span>
+</pre><pre class="codeoutput">
+----------------- E1 results -----------------------------------
+Optimal parameters are : 
+Number of neurons in hidden layer 1 : 14
+Alpha value : 1
+lambda value : 1.000000e-01it seems that bigger number of neurons improva accuracy. also small lamda rank.
+the best training results were very close to the testing results
+-----------------  F2  --- results : Network Accuracy for Testing Set - one Layer: 92.120000 Precent 
+
+</pre><h2 id="6">E2 - observing optimal parameters - 2 Hidden layers</h2><pre class="codeinput">load(<span class="string">'2Layer Results.mat'</span>)
+fprintf(<span class="string">'\nnn----------------- E2 results 2 hidden Layers -----------------------------------'</span>);
+fprintf(<span class="string">'\nOptimal parameters are: '</span>);
+fprintf(<span class="string">'\nNumber of neurons in hidden layer 1: %d'</span>,HiddenLayer1(k1));
+fprintf(<span class="string">'\nNumber of neurons in hidden layer 2: %d'</span>,HiddenLayer2(l2));
+fprintf(<span class="string">'\nAlpha value: %d'</span>,alpha(i1));
+fprintf(<span class="string">'\nlambda value: %d'</span>,lambda(j1));
+<span class="comment">% F2 - observing optimal results - 2 Hidden layers</span>
+
+fprintf(<span class="string">'\n----------------- F2 --- results :'</span>);
+<span class="comment">%run result through test using forward propogation</span>
+p2 = ff_predict2(Theta12, Theta22,Theta32, Xtest,ytest);
+accMaxTwo=sum(p2 == ytest)/m * 100;
+fprintf(<span class="string">' Network Accuracy for Testing Set - two Layers : %f Precent \n'</span>, accMaxTwo);
+fprintf(<span class="string">'it seems that bigger number of neurons improv accuracy. also small lamda rank.\nthe best training results were very close to the testing results. (Similar results with 1 Layer).\n'</span>);
+</pre><pre class="codeoutput">
+nn----------------- E2 results 2 hidden Layers -----------------------------------
+Optimal parameters are: 
+Number of neurons in hidden layer 1: 14
+Number of neurons in hidden layer 2: 14
+Alpha value: 1
+lambda value: 1.000000e-01
+----------------- F2 --- results : Network Accuracy for Testing Set - two Layers : 94.160000 Precent 
+it seems that bigger number of neurons improv accuracy. also small lamda rank.
+the best training results were very close to the testing results. (Similar results with 1 Layer).
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear
+clc
+%% A1:
+load 'face_train.mat'
+load 'face_test.mat'
+load('1Layer Results.mat')
+load('2Layer Results.mat')
+ytest(ytest==-1)=2;
+fprintf('\n**************************EX5 RESULTS *************************************************************|\n');
+fprintf('\nA1: Data is loaded');
+
+%% B1: plot_face function has been made
+fprintf('\nB1: plot_face function has been made\n');
+
+
+%% C12 + D12:
+str='C12 + D12: \nwe adjusted the nn parameters with initializeParam function to fit the relevant data.\n we test here combination of different parameters to fine tune our network and get\n the optimal parameters for us to use. we are using cross-validation to  figure it out.\n note: i hve already run this code so this will be in comments forunnecesary \nactivation of this heacy program.\n';
+
+max_iter=1500;
+InputLayerSize  = size(Xtrain,2); 
+numLabels=2;
+alpha = [0.1 1 3];
+lambda = [0.1 1 3];
+HiddenLayer1=[8 14 20];
+HiddenLayer2=[8 14 20];
+
+% training the network using backpropagation algorithm with different
+% values -  1 hidden layer
+data1Layer=zeros(length(alpha)*length(lambda)*...
+     length(HiddenLayer1),7);
+ accMax1=0;
+ count=1;
+ 
+%{
+for i=1:length(alpha)
+   for j=1:length(lambda)
+      for k=1:length(HiddenLayer1)
+          
+            Theta1Tmp = InitializeParam( InputLayerSize,HiddenLayer1(k));
+            Theta2Tmp = InitializeParam(HiddenLayer1(k),numLabels);
+            [JTmp,Theta1Tmp,Theta2Tmp,accTmp] = bpHw(Theta1Tmp, Theta2Tmp, Xtrain,ytrain,max_iter, alpha(i),lambda(j));
+            if accTmp>accMax1
+                J1=JTmp;
+                Theta11=Theta1Tmp;
+                Theta21=Theta2Tmp;
+                accMax1=accTmp;
+                i1=i;
+                j1=j;
+                k1=k;
+            end  
+             fprintf(['\n %d from 27 iterations for 1 Layer \n'],count);
+             count=count+1;
+      end
+   end
+   end
+%}
+
+%% E1 - observing optimal parameters
+load('1Layer Results.mat')
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- E1 results REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-');
+fprintf('\nOptimal parameters are : ');
+fprintf('\nNumber of neurons in hidden layer 1 : %d',HiddenLayer1(k1));
+fprintf('\nAlpha value : %d',alpha(i1));
+fprintf('\nlambda value : %d',lambda(j1));
+fprintf('it seems that bigger number of neurons improva accuracy. also small lamda rank.\nthe best training results were very close to the testing results'); 
+% F1 - observing optimal results
+
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-  F2  REPLACE_WITH_DASH_DASH- results :');
+%run result through test using forward propogation
+m = size(Xtest, 1);
+p1 = ff_predict(Theta11, Theta21, Xtest,ytest);
+accMaxOne=sum(p1 == ytest)/m * 100; %we can see that the result is the same as loaded from '1Layer Results.mat'
+fprintf(' Network Accuracy for Testing Set - one Layer: %f Precent \n\n', accMaxOne);
+%fprintf('\n With optimal parameters: \nalpha=%f  \nlambda=%f \nnnumber of neurons for hidden layer:%f\n\n\n',alpha(i1),lambda(j1),HiddenLayer1(k1)); 
+
+
+
+
+% training the network using backpropagation algorithm with different
+% values -  2 hidden layer - again i already run this program so there is
+% no need to run again
+
+accMax2=0;
+count=1;
+data2Layer=zeros(length(alpha)*length(lambda)*...
+     length(HiddenLayer1)*length(HiddenLayer2),9);
+load 'face_train.mat'
+%_________________________
+%{
+for i=1:length(alpha)
+   for j=1:length(lambda)
+      for k=1:length(HiddenLayer1)
+         for l=1:length(HiddenLayer2)            
+            Theta1Tmp = InitializeParam( InputLayerSize , HiddenLayer1(k));
+            Theta2Tmp = InitializeParam( HiddenLayer1(k) , HiddenLayer2(l));
+            Theta3Tmp = InitializeParam( HiddenLayer2(l),numLabels);
+            [JTmp,Theta1Tmp,Theta2Tmp,Theta3Tmp,accTmp] = bpHw2(Theta1Tmp, Theta2Tmp, Theta3Tmp,Xtrain,ytrain,max_iter, alpha(i),lambda(j));
+            if accTmp>accMax2
+                J2=JTmp;
+                Theta12=Theta1Tmp;
+                Theta22=Theta2Tmp;
+                Theta32=Theta3Tmp;
+                accMax2=accTmp;
+                i2=i;
+                j2=j;
+                k2=k;
+                l2=l;
+            end 
+             fprintf(['\n %d from 81 iterations for 2 Layer \n'],count);
+             count=count+1;
+         end
+      end
+   end
+end
+%save the results
+%save('1Layer Results','J1','Theta11','Theta21','accMax1','i1','j1','k1');
+%save('2Layer Results','J2','Theta12','Theta22','Theta32','accMax2','i2','j2','k2','l2');
+%}
+
+%% E2 - observing optimal parameters - 2 Hidden layers
+load('2Layer Results.mat')
+fprintf('\nnnREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- E2 results 2 hidden Layers REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-');
+fprintf('\nOptimal parameters are: ');
+fprintf('\nNumber of neurons in hidden layer 1: %d',HiddenLayer1(k1));
+fprintf('\nNumber of neurons in hidden layer 2: %d',HiddenLayer2(l2));
+fprintf('\nAlpha value: %d',alpha(i1));
+fprintf('\nlambda value: %d',lambda(j1));
+% F2 - observing optimal results - 2 Hidden layers
+
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- F2 REPLACE_WITH_DASH_DASH- results :');
+%run result through test using forward propogation
+p2 = ff_predict2(Theta12, Theta22,Theta32, Xtest,ytest);
+accMaxTwo=sum(p2 == ytest)/m * 100;
+fprintf(' Network Accuracy for Testing Set - two Layers : %f Precent \n', accMaxTwo);
+fprintf('it seems that bigger number of neurons improv accuracy. also small lamda rank.\nthe best training results were very close to the testing results. (Similar results with 1 Layer).\n'); 
+
+
+##### SOURCE END #####
+--></body></html>
