@@ -51,15 +51,16 @@ void Board::initBoard(Player* p1, Player* p2)
 	}
 }
 
-void Board::crownThePawn(int dstRow, int dstCol) //crown pawn when reach behined enemy lines
+//crown pawn when reach behined enemy lines
+void Board::crownThePawn(int dstRow, int dstCol) 
 {
 	Piece* curr = (_brd[dstRow][dstCol]);
 	Queen* newQueen = new Queen(curr->getPlayer(), dstRow, dstCol, this);
 	_brd[dstRow][dstCol] = newQueen;
 	delete curr;
 }
-
-void Board::initPiece(Player* player, int row, int col, char c) //instantiate piece accordingly
+//instantiate piece accordingly
+void Board::initPiece(Player* player, int row, int col, char c)
 {
 	if (c == 'k' || c == 'K')
 	{
@@ -93,8 +94,8 @@ void Board::initPiece(Player* player, int row, int col, char c) //instantiate pi
 }
 
 
-
-void Board::print() const		//print board in console - for control purpuses
+//print board in console - for control purpuses
+void Board::print() const
 {
 	cout << "   ";
 	for (int i = 0; i < BOARD_SIZE; i++)
@@ -121,7 +122,8 @@ void Board::print() const		//print board in console - for control purpuses
 		cout << (char)('a' + i) << " ";;
 }
 
-void Board::getString(char res[]) const //return initial string, for board set up
+//return initial string, for board set up
+void Board::getString(char res[]) const
 {
 	for (int i = 0; i < BOARD_SIZE*2+1; i++)
 		res[i] = _boardString[i];
@@ -129,7 +131,8 @@ void Board::getString(char res[]) const //return initial string, for board set u
 		res[BOARD_SIZE * 2 + 1] = '\0';
 }
  
-bool Board::isPieceOfPlayer(int row, int col, Player* pl) const  //determines if piece blongs to player pl
+ //determines if piece blongs to player pl
+bool Board::isPieceOfPlayer(int row, int col, Player* pl) const
 { 
 
 	return (pl == _brd[row][col]->getPlayer()) ? true : false; 
@@ -137,7 +140,7 @@ bool Board::isPieceOfPlayer(int row, int col, Player* pl) const  //determines if
 
 bool Board::tryMove(int srcRow, int srcCol, int dstRow, int dstCol) const
 {
-	return _brd[srcRow][srcCol]->isLegalMove(dstRow, dstCol); //assert this	
+	return _brd[srcRow][srcCol]->isLegalMove(dstRow, dstCol); 
 }
 
 Piece** Board::getBoard() const
@@ -166,7 +169,8 @@ void Board::Move(int srcRow, int srcCol, int dstRow, int dstCol)
 		eatRivalPiece(srcRow, srcCol, dstRow, dstCol);
 }
 
-void Board::saveLastData(int srcRow, int srcCol, int dstRow, int dstCol) //saves last data
+//saves last data
+void Board::saveLastData(int srcRow, int srcCol, int dstRow, int dstCol)
 {
 	_lastSrcRow = srcRow;
 	_lastSrcCol = srcCol;
@@ -181,7 +185,8 @@ void Board::eatNullPiece(Piece* srcPiece, Piece* dstPiece, int srcRow, int srcCo
 	std::swap(_brd[srcRow][srcCol], _brd[dstRow][dstCol]);	//change board ptr
 }
 
-void Board::eatRivalPiece(int srcRow, int srcCol, int dstRow, int dstCol) //case of eating rival piece
+//case of eating rival piece
+void Board::eatRivalPiece(int srcRow, int srcCol, int dstRow, int dstCol)
 {
 	_brd[dstRow][dstCol] = _brd[srcRow][srcCol];			//move src ptr to dst			
 	_brd[srcRow][srcCol]->setPosition(dstRow, dstCol);		//change internal position
