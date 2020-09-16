@@ -1,0 +1,1 @@
+function [] = plotdata2(X,y,theta)%plot decision boundry and dataplot(X(y==0,2),X(y==0,3),'ko','MarkerFaceColor', 'g')hold onplot(X(y==1,2),X(y==1,3),'kd', 'MarkerFaceColor', 'r')v=axis;xmin=v(1);ymin=(-theta(1)-theta(2)*xmin)/theta(3);xmax=v(2);ymax=(-theta(1)-theta(2)*xmax)/theta(3);plot([xmin,xmax],[ymin,ymax],'b')end

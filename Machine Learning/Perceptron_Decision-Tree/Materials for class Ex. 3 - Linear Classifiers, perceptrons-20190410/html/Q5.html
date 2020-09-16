@@ -1,0 +1,228 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q5</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-05-23"><meta name="DC.source" content="Q5.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Question 5 d - creating the decision tree - 'tree' in a struct array</a></li><li><a href="#3">Question 5 e - using the tree (named "tree") with iris data - after training it with half the data data.</a></li></ul></div><pre class="codeinput">clear
+</pre><h2 id="2">Question 5 d - creating the decision tree - 'tree' in a struct array</h2><pre class="codeinput">load <span class="string">fisheriris</span>              <span class="comment">%load data</span>
+maxLen = 100;                <span class="comment">%define max known length</span>
+eps=0.01;                     <span class="comment">%set stop criteria</span>
+dim=size(meas);              <span class="comment">%get size</span>
+perms=randperm(dim(1));     <span class="comment">%get indices for data deviding</span>
+trainInd=perms(1:dim(1)/2);
+Xt=meas(trainInd,:);                    <span class="comment">%copy data</span>
+y=species(trainInd,:);                  <span class="comment">%copy data                  %building the struct tree</span>
+tree=struct(<span class="string">'feature'</span>, cell(1, maxLen),<span class="string">'leaf'</span>, cell(1, maxLen), <span class="string">'class'</span>, cell(1, maxLen) ,<span class="string">'alpha'</span>, cell(1, maxLen), <span class="string">'data'</span>, cell(1, maxLen), <span class="string">'tag'</span>, cell(1, maxLen)  );
+tree(1).leaf=0;             <span class="comment">%**** setting up first node ****</span>
+tree(1).class=0;
+tree(1).alpha=NaN;
+tree(1).data=Xt;
+tree(1).tag=string(y);      <span class="comment">%**** finish setup</span>
+
+<span class="keyword">for</span> i=1:maxLen       <span class="comment">%train the system iterativly</span>
+
+    [Xy,Yy,Xn,Yn,isLeaf,feature,alpha,tag] = splitNode(tree(i).data,tree(i).tag,eps);
+    <span class="keyword">if</span> isLeaf~=0  <span class="comment">%if is a leaf</span>
+        tree(i).leaf=1;
+        tree(i).class=tag;
+        tree(i).alpha=NaN;
+        tree(i).data=NaN;
+        tree(i).tag=tag;
+    <span class="keyword">else</span>        <span class="comment">%if not a leaf</span>
+        tree(i).alpha=alpha;    <span class="comment">%set vertex info - alpha, feature</span>
+        tree(i).feature=feature;
+        tree(i).leaf=-1;
+        tree(i).class=-1;
+        tree(i*2).data=Xn;  <span class="comment">%send data to next vertex - left child</span>
+        tree(i*2).tag=Yn;
+
+        tree(i*2+1).data=Xy; <span class="comment">%send data to next vertex - right child</span>
+        tree(i*2+1).tag=Yy;
+
+        tree(i).data=NaN;       <span class="comment">%release memory</span>
+        tree(i).tag=NaN;
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><h2 id="3">Question 5 e - using the tree (named "tree") with iris data - after training it with half the data data.</h2><pre class="codeinput">f=0;
+c=0;
+<span class="keyword">for</span> i=1:dim(1)      <span class="comment">%this actions calculate the new tree's success rate and assign to result</span>
+   x=meas(i,:);
+   y=species{i};
+   in=1;
+   f=0;
+   <span class="keyword">while</span>  f==0
+       <span class="keyword">if</span> tree(in).leaf==1 &amp;&amp; (checkStr(tree(in).tag)==1) <span class="comment">%if we reached a node</span>
+           <span class="keyword">if</span> tree(in).tag==y
+               c=c+1;
+           <span class="keyword">end</span>
+           f=1;
+       <span class="keyword">else</span>
+           feat=tree(in).feature;      <span class="comment">%if not a leaf "traverse down the tree"</span>
+           <span class="keyword">if</span> x(feat)&gt;tree(in).alpha
+              in=in*2+1;
+           <span class="keyword">else</span>
+               in=in*2;
+           <span class="keyword">end</span>
+       <span class="keyword">end</span>
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+result=c/dim(1);<span class="comment">% calculate precentage</span>
+
+figure(1) <span class="comment">%%% display data</span>
+strH=<span class="string">'Q5e - fisherIris'</span>;
+str1=[<span class="string">'The impurity change stopping criterea is: '</span>,num2str(eps)];
+str2=[<span class="string">'The success rate for fisherIris is: '</span>,num2str(result*100),<span class="string">'%'</span>];
+t1 = annotation(<span class="string">'textbox'</span>,<span class="string">'string'</span>,{<span class="string">' '</span>,strH,<span class="string">' '</span>,str1,<span class="string">' '</span>,str2 },<span class="string">'VerticalAlignment'</span>,<span class="string">'top'</span>);
+t1.FontSize = 16;
+t1.Position=[0.1 0.28 0.8 0.5];
+t1.BackgroundColor=<span class="string">'yellow'</span>;
+t1.Color=[0 0 0];
+disp(<span class="string">'finish'</span>);
+</pre><pre class="codeoutput">finish
+</pre><img vspace="5" hspace="5" src="Q5_01.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear
+%% Question 5 d - creating the decision tree - 'tree' in a struct array
+load fisheriris              %load data
+maxLen = 100;                %define max known length
+eps=0.01;                     %set stop criteria
+dim=size(meas);              %get size
+perms=randperm(dim(1));     %get indices for data deviding
+trainInd=perms(1:dim(1)/2);
+Xt=meas(trainInd,:);                    %copy data
+y=species(trainInd,:);                  %copy data                  %building the struct tree
+tree=struct('feature', cell(1, maxLen),'leaf', cell(1, maxLen), 'class', cell(1, maxLen) ,'alpha', cell(1, maxLen), 'data', cell(1, maxLen), 'tag', cell(1, maxLen)  );
+tree(1).leaf=0;             %**** setting up first node ****
+tree(1).class=0;
+tree(1).alpha=NaN;
+tree(1).data=Xt;
+tree(1).tag=string(y);      %**** finish setup
+
+for i=1:maxLen       %train the system iterativly
+        
+    [Xy,Yy,Xn,Yn,isLeaf,feature,alpha,tag] = splitNode(tree(i).data,tree(i).tag,eps);
+    if isLeaf~=0  %if is a leaf
+        tree(i).leaf=1;
+        tree(i).class=tag;
+        tree(i).alpha=NaN;
+        tree(i).data=NaN;
+        tree(i).tag=tag;
+    else        %if not a leaf
+        tree(i).alpha=alpha;    %set vertex info - alpha, feature
+        tree(i).feature=feature;
+        tree(i).leaf=-1;
+        tree(i).class=-1;
+        tree(i*2).data=Xn;  %send data to next vertex - left child
+        tree(i*2).tag=Yn;
+        
+        tree(i*2+1).data=Xy; %send data to next vertex - right child
+        tree(i*2+1).tag=Yy;
+        
+        tree(i).data=NaN;       %release memory
+        tree(i).tag=NaN;
+    end
+
+end
+
+%% Question 5 e - using the tree (named "tree") with iris data - after training it with half the data data.
+f=0;
+c=0;
+for i=1:dim(1)      %this actions calculate the new tree's success rate and assign to result
+   x=meas(i,:);
+   y=species{i};
+   in=1;
+   f=0;
+   while  f==0
+       if tree(in).leaf==1 && (checkStr(tree(in).tag)==1) %if we reached a node
+           if tree(in).tag==y
+               c=c+1;
+           end
+           f=1;
+       else
+           feat=tree(in).feature;      %if not a leaf "traverse down the tree"
+           if x(feat)>tree(in).alpha
+              in=in*2+1; 
+           else
+               in=in*2;
+           end
+       end
+   end
+end
+result=c/dim(1);% calculate precentage
+
+figure(1) %%% display data 
+strH='Q5e - fisherIris';
+str1=['The impurity change stopping criterea is: ',num2str(eps)];
+str2=['The success rate for fisherIris is: ',num2str(result*100),'%'];
+t1 = annotation('textbox','string',{' ',strH,' ',str1,' ',str2 },'VerticalAlignment','top');
+t1.FontSize = 16;
+t1.Position=[0.1 0.28 0.8 0.5];
+t1.BackgroundColor='yellow';
+t1.Color=[0 0 0];
+disp('finish');
+##### SOURCE END #####
+--></body></html>
